@@ -1,108 +1,116 @@
+
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as font
 # comentario de prueba
+import numpy as np
+
+
 class App(tk.Tk):
 
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         # Configuración inicial
 
         self.configure(bg='black')
-        font.nametofont('TkDefaultFont').configure(size=12,underline=True)
+        font.nametofont('TkDefaultFont').configure(size=12, underline=True)
         self.title('Proyecto Estructura de Datos')
-        self.columnconfigure(0,weight=1)
-        self.rowconfigure(0,weight=1)
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
         # self.geometry('1200x720')
 
-        # Contenedor principal 
-        contenedor_principal = tk.Frame(self,bg='#258BED')
-        contenedor_principal.grid(row=0, column=0,columnspan=3,padx=20,pady=20)
+        # Contenedor principal
+        contenedor_principal = tk.Frame(self, bg='#258BED')
+        contenedor_principal.grid(
+            row=0, column=0, columnspan=3, padx=20, pady=20)
 
         # Diccionario de Frames
         self.todos_los_frames = dict()
 
-        for F in (Frame_1, Frame_2,Frame_3):
+        for F in (Frame_1, Frame_2, Frame_3):
 
             frame = F(contenedor_principal, self)
             self.todos_los_frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-        
+
         self.show_frame(Frame_1)
-    
+
     def show_frame(self, contenedor_llamado):
         frame = self.todos_los_frames[contenedor_llamado]
         frame.tkraise()
 
+
 class Frame_1(tk.Frame):
-    def __init__(self,container,controller,*args,**kwargs):
-        super().__init__(container,*args,**kwargs)
-        
+    def __init__(self, container, controller, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+
         # Configuraión inicial
         self.configure(bg='#258BED')
         self.entrada_usuario = tk.StringVar()
 
-
         # Label
         titulo = tk.Label(self, text="Proyecto Final de Estructura de Datos", font=(
-             "Roboto",36, "bold"), bg="#258BED", fg="black")
+            "Roboto", 36, "bold"), bg="#258BED", fg="black")
 
-        titulo.grid(row=10, column=2, columnspan=40, padx=20,pady=20,sticky="n")
+        titulo.grid(row=10, column=2, columnspan=40,
+                    padx=20, pady=20, sticky="n")
 
         estudiante = tk.Label(self, text="Developed by: ",
-                       font=("Roboto", 11), bg="#258BED",fg='black')
+                              font=("Roboto", 11), bg="#258BED", fg='black')
         estudiante.grid(row=15, column=3, sticky="w")
 
         nombre = tk.Label(self, text="Víktor López Amiquero",
-                       font=("Roboto", 10), bg="#258BED",fg='black')
+                          font=("Roboto", 10), bg="#258BED", fg='black')
         nombre.grid(row=18, column=3, sticky="w")
 
+        # Button
+        btnConjunto = ttk.Button(
+            self, text="Conjuntos", command=lambda: controller.show_frame(Frame_2))
 
-        #Button
-        btnConjunto = ttk.Button(self, text="Conjuntos" , command = lambda:controller.show_frame( Frame_2 ))
+        btnConjunto.grid(row=20, column=2, pady=50, sticky="e")
 
-        btnConjunto.grid(row=20, column=2,pady=50, sticky="e")
+        # buton matrices
+        btnConjunto = ttk.Button(
+            self, text="Matrices", command=lambda: controller.show_frame(Frame_3))
 
-        #buton matrices
-        btnConjunto = ttk.Button(self, text="Matrices" , command = lambda:controller.show_frame( Frame_3 ))
+        btnConjunto.grid(row=20, column=3, pady=50, padx=20, sticky="e")
 
-        btnConjunto.grid(row=20, column=3,pady=50,padx=20, sticky="e")
 
 class Frame_2(tk.Frame):
     def __init__(self, container, controller, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
         self.configure(bg="#258BED")
-         
+
         entrada_usuario = tk.StringVar()
         entrada_usuario2 = tk.StringVar()
         resultado = tk.StringVar()
 
         def union():
-            listaA =  str(entrada_usuario.get()).split(',')       
+            listaA = str(entrada_usuario.get()).split(',')
             listaB = str(entrada_usuario2.get()).split(',')
 
             conjUnion = set(listaA+listaB)
             resultado.set(conjUnion)
 
-        
         def interseccion():
-            listaA = str(entrada_usuario.get()).split(',') 
+            listaA = str(entrada_usuario.get()).split(',')
             listaB = str(entrada_usuario2.get()).split(',')
-            
+
             conjInterseccion = []
             for i in listaA:
-                if i in listaB: conjInterseccion.append(i)
-            
+                if i in listaB:
+                    conjInterseccion.append(i)
+
             resultado.set(set(conjInterseccion))
-            if not conjInterseccion: resultado.set('No existe intersección')
-                
-        
+            if not conjInterseccion:
+                resultado.set('No existe intersección')
+
         def diferencia():
-            listaA = str(entrada_usuario.get()).split(',')  
+            listaA = str(entrada_usuario.get()).split(',')
             listaB = str(entrada_usuario2.get()).split(',')
-            
+
             for i in listaB:
                 if i in listaA:
                     listaA.remove(i)
@@ -113,7 +121,7 @@ class Frame_2(tk.Frame):
 
             listaA = str(entrada_usuario.get()).split(',')
             listaB = str(entrada_usuario2.get()).split(',')
-            
+
             listaUnion = listaA + listaB
             listaSinrep = []
 
@@ -139,159 +147,222 @@ class Frame_2(tk.Frame):
             resultado.set('')
             # print('Hola Mundo')
 
-
-        # Label 
+        # Label
         lblconjuntoA = tk.Label(self, text="Conjunto A", font=(
             "Roboto", 14, "bold"), bg="#258BED", fg="black")
-        lblconjuntoA.grid(row=3, column=4, columnspan=20, sticky="n",pady=20)
-        entryConjA = ttk.Entry(self, textvariable=entrada_usuario,width=50,font=("Roboto Cn",20))
+        lblconjuntoA.grid(row=3, column=4, columnspan=20, sticky="n", pady=20)
+        entryConjA = ttk.Entry(
+            self, textvariable=entrada_usuario, width=50, font=("Roboto Cn", 20))
         entryConjA.grid(row=4, columnspan=20, padx=(10, 20))
 
-        
         lblconjuntoB = tk.Label(self, text="Conjunto B", font=(
             "Roboto", 14, 'bold'), bg="#258BED")
-        lblconjuntoB.grid(row=5, column=4,columnspan=20, sticky="n",pady=20)
+        lblconjuntoB.grid(row=5, column=4, columnspan=20, sticky="n", pady=20)
 
-        entryConjB = ttk.Entry(self,textvariable=entrada_usuario2,width=50,font=("Roboto Cn",20))
-        entryConjB.grid(row=6,column = 4, columnspan=20,padx=(10,20))
+        entryConjB = ttk.Entry(
+            self, textvariable=entrada_usuario2, width=50, font=("Roboto Cn", 20))
+        entryConjB.grid(row=6, column=4, columnspan=20, padx=(10, 20))
 
         lblconjuntoC = tk.Label(self, text="Resultado", font=(
             "Roboto", 14, 'bold'), bg="#258BED")
-        lblconjuntoC.grid(row=7, column=4,columnspan=20, sticky="n",pady=20)
+        lblconjuntoC.grid(row=7, column=4, columnspan=20, sticky="n", pady=20)
 
-        boxresultado = ttk.Entry(self,textvariable=resultado,width=50,font=("Roboto Cn",20))
-        boxresultado.grid(row=8,column = 4, columnspan=20,padx=(10,20))
-        
-        btnUnion = ttk.Button(self, text="Unión",command=union)
-        btnUnion.grid(row=10,column=4,pady=20,padx=20)
+        boxresultado = ttk.Entry(
+            self, textvariable=resultado, width=50, font=("Roboto Cn", 20))
+        boxresultado.grid(row=8, column=4, columnspan=20, padx=(10, 20))
 
-        btnInterseccion = ttk.Button(self, text="Intersección",command=interseccion)
-        btnInterseccion.grid(row=10,column=5,pady=20,padx=20)
+        btnUnion = ttk.Button(self, text="Unión", command=union)
+        btnUnion.grid(row=10, column=4, pady=20, padx=20)
 
-        btndiferencia = ttk.Button(self, text="Diferencia",command=diferencia)
-        btndiferencia.grid(row=10,column=6,pady=20,padx=20)
+        btnInterseccion = ttk.Button(
+            self, text="Intersección", command=interseccion)
+        btnInterseccion.grid(row=10, column=5, pady=20, padx=20)
 
-        btnDifSimetrica = ttk.Button(self, text="Dif. Simétrica",command=diferenciaSimetrica)
-        btnDifSimetrica.grid(row=10,column=7,pady=20,padx=20)
+        btndiferencia = ttk.Button(self, text="Diferencia", command=diferencia)
+        btndiferencia.grid(row=10, column=6, pady=20, padx=20)
 
-        btnLimpiar = ttk.Button(self, text="Limpiar",command=limpiar)
-        btnLimpiar.grid(row=10,column=8,pady=20,padx=20)
+        btnDifSimetrica = ttk.Button(
+            self, text="Dif. Simétrica", command=diferenciaSimetrica)
+        btnDifSimetrica.grid(row=10, column=7, pady=20, padx=20)
+
+        btnLimpiar = ttk.Button(self, text="Limpiar", command=limpiar)
+        btnLimpiar.grid(row=10, column=8, pady=20, padx=20)
 
         btnMenu = ttk.Button(self, text="Menú",
-                            command=lambda: controller.show_frame(Frame_1))
-        btnMenu.grid(row=10, column=9,pady=20,padx=20)
+                             command=lambda: controller.show_frame(Frame_1))
+        btnMenu.grid(row=10, column=9, pady=20, padx=20)
+
 
 class Frame_3(tk.Frame):
     def __init__(self, container, controller, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
         self.configure(bg="#258BED")
-         
-        entrada_usuario = tk.StringVar()
+
+        entrada_usuario1 = tk.StringVar()
         entrada_usuario2 = tk.StringVar()
+        entrada_usuario3 = tk.StringVar()
+        entrada_usuario4 = tk.StringVar()
         resultado = tk.StringVar()
 
-        def union():
-            listaA =  str(entrada_usuario.get()).split(',')       
-            listaB = str(entrada_usuario2.get()).split(',')
+        def convertirArray():
+            lista1 = str(entrada_usuario1.get()).split(',')
+            lista2 = str(entrada_usuario2.get()).split(',')
+            lista3 = str(entrada_usuario3.get()).split(',')
+            lista4 = str(entrada_usuario4.get()).split(',')
 
-            conjUnion = set(listaA+listaB)
-            resultado.set(conjUnion)
+            listaTotal = [lista1, lista2, lista3, lista4]
 
-        
-        def interseccion():
-            listaA = str(entrada_usuario.get()).split(',') 
-            listaB = str(entrada_usuario2.get()).split(',')
-            
-            conjInterseccion = []
-            for i in listaA:
-                if i in listaB: conjInterseccion.append(i)
-            
-            resultado.set(set(conjInterseccion))
-            if not conjInterseccion: resultado.set('No existe intersección')
-                
-        
-        def diferencia():
-            listaA = str(entrada_usuario.get()).split(',')  
-            listaB = str(entrada_usuario2.get()).split(',')
-            
-            for i in listaB:
-                if i in listaA:
-                    listaA.remove(i)
-            conjDiferencia = set(listaA)
-            resultado.set(conjDiferencia)
+            listaEnt1 = []
+            listaEnt2 = []
+            listaEnt3 = []
+            listaEnt4 = []
 
-        def diferenciaSimetrica():
+            listaEntTotal = [listaEnt1, listaEnt2, listaEnt3, listaEnt4]
 
-            listaA = str(entrada_usuario.get()).split(',')
-            listaB = str(entrada_usuario2.get()).split(',')
-            
-            listaUnion = listaA + listaB
-            listaSinrep = []
+            # Convertir lista de cadenas a elementos enteros
+            def crearListaEnteros(listan, listEn):
+                for i in range(len(listan)):
+                    listEn.insert(i, int(listan[i]))
 
-            for i in listaUnion:
-                if i not in listaSinrep:
-                    listaSinrep.append(i)
+            for i in range(len(listaTotal)):
+                crearListaEnteros(listaTotal[i], listaEntTotal[i])
 
-            conjInterseccion = []
-            for i in listaA:
-                if i in listaB:
-                    conjInterseccion.append(i)
+            array2 = np.array([listaEnt1, listaEnt2, listaEnt3, listaEnt4])
 
-            for i in conjInterseccion:
-                if i in listaSinrep:
-                    listaSinrep.remove(i)
-            conjDifSimetrica = set(listaSinrep)
+            return array2
 
-            resultado.set(conjDifSimetrica)
+        def minimo():
+            # print('Hola Mundo')
+            elemMinimo = convertirArray().min()
+            resultado.set(elemMinimo)
+
+        def maximo():
+            elemMaximo = convertirArray().max()
+            resultado.set(elemMaximo)
+
+        def suma():
+            sumaTotal = convertirArray().sum()
+            resultado.set(sumaTotal)
+
+        def sumaFilas():
+
+            sumaFilas = convertirArray().sum(axis=1)
+            resultado.set(sumaFilas)
+
+        def sumaColumnas():
+            sumaColumnas = convertirArray().sum(axis=0)
+            resultado.set(sumaColumnas)
+
+        def matrizDiagonal():
+            array2 = convertirArray()
+            dim = array2.shape
+            listDiagonal = []
+            if dim[0] == dim[1]:
+                for i in range(dim[0]):
+                    for j in range(dim[1]):
+                        if i == j:
+                            listDiagonal.insert(i, array2[i][j])
+            arrayDiagonal = np.array(listDiagonal)
+            resultado.set(arrayDiagonal)
+
+        def sumaDiagonal():
+            array2 = convertirArray()
+            dim = array2.shape
+            suma = 0
+            if dim[0] == dim[1]:
+                for i in range(dim[0]):
+                    for j in range(dim[1]):
+                        if i == j:
+                            suma += array2[i][j]
+            resultado.set(suma)
 
         def limpiar():
-            entrada_usuario.set('')
+            entrada_usuario1.set('')
             entrada_usuario2.set('')
+            entrada_usuario3.set('')
+            entrada_usuario4.set('')
             resultado.set('')
+
             # print('Hola Mundo')
 
+        def rellenar():
+            entrada_usuario1.set('17,32,58,151')
+            entrada_usuario2.set('30,592,753,896')
+            entrada_usuario3.set('81,123,159,389')
+            entrada_usuario4.set('97,324,159,157')
 
-        # Label 
-        lblconjuntoA = tk.Label(self, text="Campo Matrices", font=(
+        # Label
+        lblconjuntoA = tk.Label(self, text="Matriz", font=(
             "Roboto", 14, "bold"), bg="#258BED", fg="black")
-        lblconjuntoA.grid(row=3, column=4, columnspan=20, sticky="n",pady=20)
-        entryConjA = ttk.Entry(self, textvariable=entrada_usuario,width=50,font=("Roboto Cn",20))
-        entryConjA.grid(row=4, columnspan=20, padx=(10, 20))
+        lblconjuntoA.grid(row=3, column=1, pady=20)
 
-        
-        lblconjuntoB = tk.Label(self, text="Conjunto B", font=(
-            "Roboto", 14, 'bold'), bg="#258BED")
-        lblconjuntoB.grid(row=5, column=4,columnspan=20, sticky="n",pady=20)
+        # Entrada1
+        entryFila1 = ttk.Entry(
+            self, textvariable=entrada_usuario1, width=25, font=("Roboto Cn", 20))
+        entryFila1.grid(row=4, column=1, padx=10)
 
-        entryConjB = ttk.Entry(self,textvariable=entrada_usuario2,width=50,font=("Roboto Cn",20))
-        entryConjB.grid(row=6,column = 4, columnspan=20,padx=(10,20))
+        # Entrada 2
+        entryFila2 = ttk.Entry(
+            self, textvariable=entrada_usuario2, width=25, font=("Roboto Cn", 20))
+        entryFila2.grid(row=5, column=1, padx=10)
 
-        lblconjuntoC = tk.Label(self, text="Resultado", font=(
-            "Roboto", 14, 'bold'), bg="#258BED")
-        lblconjuntoC.grid(row=7, column=4,columnspan=20, sticky="n",pady=20)
+        # Entrada 3
+        entryFila3 = ttk.Entry(
+            self, textvariable=entrada_usuario3, width=25, font=("Roboto Cn", 20))
+        entryFila3.grid(row=6, column=1, padx=10)
 
-        boxresultado = ttk.Entry(self,textvariable=resultado,width=50,font=("Roboto Cn",20))
-        boxresultado.grid(row=8,column = 4, columnspan=20,padx=(10,20))
-        
-        btnUnion = ttk.Button(self, text="Unión",command=union)
-        btnUnion.grid(row=10,column=4,pady=20,padx=20)
+        # Entrada 4
+        entryFila4 = ttk.Entry(
+            self, textvariable=entrada_usuario4, width=25, font=("Roboto Cn", 20))
+        entryFila4.grid(row=7, column=1, padx=10)
 
-        btnInterseccion = ttk.Button(self, text="Intersección",command=interseccion)
-        btnInterseccion.grid(row=10,column=5,pady=20,padx=20)
+        # Label
+        lblMatriz = tk.Label(self, text="Resultado", font=(
+            "Roboto", 14, "bold"), bg="#258BED", fg="black")
+        lblMatriz.grid(row=8, column=1, pady=20)
 
-        btndiferencia = ttk.Button(self, text="Diferencia",command=diferencia)
-        btndiferencia.grid(row=10,column=6,pady=20,padx=20)
+        # Caja resultado
+        boxresultado = ttk.Entry(
+            self, textvariable=resultado, width=25, font=("Roboto Cn", 20))
+        boxresultado.grid(row=9, column=1, padx=10, pady=20)
 
-        btnDifSimetrica = ttk.Button(self, text="Dif. Simétrica",command=diferenciaSimetrica)
-        btnDifSimetrica.grid(row=10,column=7,pady=20,padx=20)
+        # Botones
+        btnMinimo = ttk.Button(self, text="Elemento Mínimo", command=minimo)
+        btnMinimo.grid(row=4, column=2, pady=20, padx=20)
 
-        btnLimpiar = ttk.Button(self, text="Limpiar",command=limpiar)
-        btnLimpiar.grid(row=10,column=8,pady=20,padx=20)
+        btnMaximo = ttk.Button(
+            self, text="Elemento Máximo", command=maximo)
+        btnMaximo.grid(row=4, column=3, pady=20, padx=20)
+
+        btnSumaTotal = ttk.Button(self, text="Suma Total", command=suma)
+        btnSumaTotal.grid(row=5, column=2, pady=20, padx=20)
+
+        btnSumFilas = ttk.Button(
+            self, text="Suma de Filas", command=sumaFilas)
+        btnSumFilas.grid(row=5, column=3, pady=20, padx=20)
+
+        btnSumColumnas = ttk.Button(
+            self, text="Suma de Columnas", command=sumaColumnas)
+        btnSumColumnas.grid(row=6, column=2, pady=20, padx=20)
+
+        btnDiagonal = ttk.Button(
+            self, text="Matriz diagonal", command=matrizDiagonal)
+        btnDiagonal.grid(row=6, column=3, pady=20, padx=20)
+
+        btnSumDiagonal = ttk.Button(
+            self, text="Suma diagonal", command=sumaDiagonal)
+        btnSumDiagonal.grid(row=7, column=2, pady=20, padx=20)
+
+        btnAleatorio = ttk.Button(
+            self, text="Rellenar Aleatorio", command=rellenar)
+        btnAleatorio.grid(row=7, column=3, pady=20, padx=20)
+
+        btnLimpiar = ttk.Button(self, text="Limpiar", command=limpiar)
+        btnLimpiar.grid(row=9, column=2, pady=20, padx=20)
 
         btnMenu = ttk.Button(self, text="Menú",
-                            command=lambda: controller.show_frame(Frame_1))
-        btnMenu.grid(row=10, column=9,pady=20,padx=20)
-        
+                             command=lambda: controller.show_frame(Frame_1))
+        btnMenu.grid(row=9, column=3, pady=20, padx=20)
 
 
 root = App()
