@@ -1,10 +1,15 @@
-
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as font
-# comentario de prueba
 import numpy as np
+from pilas.pila import Pila
+# from listas.nodo import Nodo
+from listas.listaSimple import Linkedlist
+from random import randint
+from colas.colas import Cola
+import matplotlib.pyplot as plt
+from matplotlib_venn import venn2
 
 
 class App(tk.Tk):
@@ -29,7 +34,7 @@ class App(tk.Tk):
         # Diccionario de Frames
         self.todos_los_frames = dict()
 
-        for F in (Frame_1, Frame_2, Frame_3):
+        for F in (Frame_1, Frame_2, Frame_3, Frame_4, Frame_5, Frame_6):
 
             frame = F(contenedor_principal, self)
             self.todos_los_frames[F] = frame
@@ -54,31 +59,73 @@ class Frame_1(tk.Frame):
         titulo = tk.Label(self, text="Proyecto Final de Estructura de Datos", font=(
             "Roboto", 36, "bold"), bg="#258BED", fg="black")
 
-        titulo.grid(row=10, column=2, columnspan=40,
+        titulo.grid(row=1, column=0, columnspan=40,
                     padx=20, pady=20, sticky="n")
 
-        estudiante = tk.Label(self, text="Developed by: ",
-                              font=("Roboto", 11), bg="#258BED", fg='black')
-        estudiante.grid(row=15, column=3, sticky="w")
+        # Datos
+        estudiante = tk.Label(self, text="UNSCH",
+                              font=("Roboto", 14), bg="#258BED", fg='black')
+        estudiante.grid(row=3, column=3, sticky="w", padx=20)
 
-        nombre = tk.Label(self, text="Víktor López Amiquero",
-                          font=("Roboto", 10), bg="#258BED", fg='black')
-        nombre.grid(row=18, column=3, sticky="w")
+        estudiante = tk.Label(self, text="EP: Ingeniería de Sistemas",
+                              font=("Roboto", 14), bg="#258BED", fg='black')
+        estudiante.grid(row=5, column=3, sticky="w",  padx=20)
 
-        # Button
+        estudiante = tk.Label(self, text="Developed by:",
+                              font=("Roboto", 12), bg="#258BED", fg='black')
+        estudiante.grid(row=6, column=3, sticky="w", pady=10, padx=20)
+
+        nombre = tk.Label(self, text="Víctor López Amiquero",
+                          font=("Roboto", 12), bg="#258BED", fg='black')
+        nombre.grid(row=7, column=3, sticky="w", padx=20)
+
+        # Boton
         btnConjunto = ttk.Button(
             self, text="Conjuntos", command=lambda: controller.show_frame(Frame_2))
 
-        btnConjunto.grid(row=20, column=2, pady=50, sticky="e")
+        btnConjunto.grid(row=8, column=3, pady=50, sticky="e")
 
-        # buton matrices
+        # Boton matrices
         btnConjunto = ttk.Button(
             self, text="Matrices", command=lambda: controller.show_frame(Frame_3))
 
-        btnConjunto.grid(row=20, column=3, pady=50, padx=20, sticky="e")
+        btnConjunto.grid(row=8, column=4, pady=50, padx=20, sticky="e")
+
+        # Botón listas
+        btnPilas = ttk.Button(
+            self, text="Listas", command=lambda: controller.show_frame(Frame_4))
+
+        btnPilas.grid(row=8, column=5, pady=50, padx=20, sticky="e")
+
+        # Botón pilas
+        btnPilas = ttk.Button(
+            self, text="Pilas", command=lambda: controller.show_frame(Frame_5))
+
+        btnPilas.grid(row=8, column=6, pady=50, padx=20, sticky="e")
+
+        # Botón pilas
+        btnPilas = ttk.Button(
+            self, text="Colas", command=lambda: controller.show_frame(Frame_6))
+
+        btnPilas.grid(row=8, column=7, pady=50, padx=20, sticky="e")
+
+        # Botón pilas
+        btnPilas = ttk.Button(
+            self, text="Arboles", command=lambda: controller.show_frame(Frame_5))
+
+        btnPilas.grid(row=8, column=8, pady=50, padx=20, sticky="e")
+
+        # Botón pilas
+        btnPilas = ttk.Button(
+            self, text="Grafos", command=lambda: controller.show_frame(Frame_5))
+
+        btnPilas.grid(row=8, column=9, pady=50, padx=20, sticky="e")
 
 
 class Frame_2(tk.Frame):
+
+    # Conjuntos
+
     def __init__(self, container, controller, *args, **kwargs):
         super().__init__(container, *args, **kwargs)
         self.configure(bg="#258BED")
@@ -363,6 +410,233 @@ class Frame_3(tk.Frame):
         btnMenu = ttk.Button(self, text="Menú",
                              command=lambda: controller.show_frame(Frame_1))
         btnMenu.grid(row=9, column=3, pady=20, padx=20)
+
+# Listas simples
+
+
+class Frame_4(tk.Frame):
+    def __init__(self, container, controller, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+        self.configure(bg="#258BED")
+
+        # Creación del objeto lista
+        listaSimple = Linkedlist()
+        entrada_usuario1 = tk.StringVar()
+        entrada_usuario2 = tk.StringVar()
+
+        resultado = tk.StringVar()
+
+        def insertarPrimerPos():
+            listaSimple.insertarPrimerPos(int(entrada_usuario1.get()))
+            resultado.set(listaSimple)
+
+            # limpiar()
+
+        def insertarUltimaPos():
+            listaSimple.insertarUltimaPos(entrada_usuario1.get())
+            resultado.set(listaSimple)
+
+            # limpiar()
+
+        def insertarDespuesNodoBuscado():
+            listaSimple.insertarDespuesNodoBuscado(
+                entrada_usuario1.get(), entrada_usuario2.get())
+            resultado.set(listaSimple)
+
+            # limpiar()
+
+        def eliminar():
+            listaSimple.eliminar(entrada_usuario1.get())
+            resultado.set(listaSimple)
+
+            limpiar()
+
+        def limpiar():
+            entrada_usuario1.set('')
+            entrada_usuario2.set('')
+
+        # Label
+        lblconjuntoA = tk.Label(self, text="Operaciones con listas simples", font=(
+            "Roboto", 16, "bold"), bg="#258BED", fg="black")
+        lblconjuntoA.grid(row=0, column=1, pady=20)
+
+        # Label
+        lblconjuntoA = tk.Label(self, text="Ingrese Dato:", font=(
+            "Roboto", 14, "bold"), bg="#258BED", fg="black")
+        lblconjuntoA.grid(row=1, column=1, padx=10, pady=10)
+
+        # Dato
+        entryFila1 = ttk.Entry(
+            self, textvariable=entrada_usuario1, width=25, font=("Roboto Cn", 20))
+        entryFila1.grid(row=2, column=1, padx=10)
+
+        # Label
+        lblconjuntoA = tk.Label(self, text="Ingrese el dato a buscar:", font=(
+            "Roboto", 16, "bold"), bg="#258BED", fg="black")
+        lblconjuntoA.grid(row=3, column=1, pady=10)
+
+        # Dato a buscar
+        entryFila1 = ttk.Entry(
+            self, textvariable=entrada_usuario2, width=25, font=("Roboto Cn", 20))
+        entryFila1.grid(row=4, column=1, padx=10)
+
+        # Label resultado
+        lblconjuntoA = tk.Label(self, text="Resultado:", font=(
+            "Roboto", 16, "bold"), bg="#258BED", fg="black")
+        lblconjuntoA.grid(row=5, column=1, pady=20)
+
+        # Caja resultado
+        boxresultado = ttk.Entry(
+            self, textvariable=resultado, width=25, font=("Roboto Cn", 20))
+        boxresultado.grid(row=6, column=1, padx=10)
+
+        # Botones
+        btnInsertarPrimero = ttk.Button(
+            self, text="Insertar primero", command=insertarPrimerPos)
+        btnInsertarPrimero.grid(row=1, column=2, padx=20)
+
+        btnInsertarUltimo = ttk.Button(
+            self, text="Insertar último", command=insertarUltimaPos)
+        btnInsertarUltimo.grid(row=1, column=3, padx=20)
+
+        btnInsertarDespues = ttk.Button(
+            self, text="Insertar (dato)", command=insertarDespuesNodoBuscado)
+        btnInsertarDespues.grid(row=2, column=2, padx=20)
+
+        btnEliminar = ttk.Button(
+            self, text="Eliminar", command=eliminar)
+        btnEliminar.grid(row=2, column=3, padx=20)
+
+        btnMenu = ttk.Button(self, text="Menú",
+                             command=lambda: controller.show_frame(Frame_1))
+        btnMenu.grid(row=4, column=3, padx=20)
+
+
+class Frame_5(tk.Frame):
+
+    tam = 10
+    # Posicion del rectangulo
+    x0 = 120
+    y0 = 200
+    x1 = 220
+    y1 = 220
+
+    pila = None
+    figuras = None
+
+    def __init__(self, container, controller, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+        self.configure(bg="#258BED")
+
+        pila = Pila(self.tam)
+
+        self.canvas = tk.Canvas(
+            self,
+            width=300,
+            height=220,
+            background='white'
+        )
+        self.canvas.grid(row=3, column=1, sticky='n')
+
+        frame = tk.Frame(self)
+        frame.grid(row=0, column=0, sticky='n')
+
+        def push():
+            # print('hiciste clic en push')
+            if pila.llena():
+                # ALERTA
+                return
+            else:
+                rand1 = randint(10, 99)
+                rand2 = randint(10, 99)
+                pila.push(self.canvas.create_rectangle(
+                    self.x0, self.y0, self.x1, self.y1,
+                    fill="#" + str(rand1) + "ff" + str(rand2)
+                ))
+                self.y0 -= 20
+                self.y1 -= 20
+
+        def pop():
+            # print('Hiciste clic en pop')
+            if pila.vacia():
+                # ALERTA
+                return
+            else:
+                figura = pila.pop()
+                self.canvas.delete(figura)
+                self.y0 += 20
+                self.y1 += 20
+
+        # Label
+        lblconjuntoA = tk.Label(self, text="Pilas", font=(
+            "Roboto", 14, "bold"), bg="#258BED", fg="black")
+        lblconjuntoA.grid(row=0, column=1, pady=20)
+
+        # Botones
+        btnPush = ttk.Button(self, text="Push", command=push)
+        btnPush.grid(row=1, column=0, pady=5, padx=20)
+
+        btnPop = ttk.Button(
+            self, text="Pop", command=pop)
+        btnPop.grid(row=2, column=0, pady=5, padx=20)
+
+        btnMenu = ttk.Button(self, text="Menú",
+                             command=lambda: controller.show_frame(Frame_1))
+        btnMenu.grid(row=4, column=2, pady=10, padx=20)
+
+
+class Frame_6(tk.Frame):
+
+    def __init__(self, container, controller, *args, **kwargs):
+        super().__init__(container, *args, **kwargs)
+        self.configure(bg="#258BED")
+
+        # Creación del objeto cola
+        nuevaCola = Cola()
+
+        entrada_usuario1 = tk.StringVar()
+
+        resultado = tk.StringVar()
+
+        def encolar():
+            nuevaCola.encolar(int(entrada_usuario1.get()))
+            resultado.set(nuevaCola)
+
+        def desencolar():
+            nuevaCola.desencolar()
+            resultado.set(nuevaCola)
+
+        # Label
+        lblconjuntoA = tk.Label(self, text="Colas", font=(
+            "Roboto", 14, "bold"), bg="#258BED", fg="black")
+        lblconjuntoA.grid(row=0, column=1, pady=20)
+
+        # Botones
+        btnEncolar = ttk.Button(self, text="Encolar", command=encolar)
+        btnEncolar.grid(row=1, column=0, pady=5, padx=20)
+
+        # Entrada1
+        entryFila1 = ttk.Entry(
+            self, textvariable=entrada_usuario1, width=25, font=("Roboto Cn", 20))
+        entryFila1.grid(row=1, column=1, padx=10)
+
+        btnDesencolar = ttk.Button(
+            self, text="Desencolar", command=desencolar)
+        btnDesencolar.grid(row=2, column=0, pady=5, padx=20)
+
+        # Label resultado
+        lblResultado = tk.Label(self, text="Resultado:", font=(
+            "Roboto", 16, "bold"), bg="#258BED", fg="black")
+        lblResultado.grid(row=3, column=1, pady=20)
+
+        # Caja resultado
+        boxresultado = ttk.Entry(
+            self, textvariable=resultado, width=25, font=("Roboto Cn", 20))
+        boxresultado.grid(row=4, column=1, padx=10)
+
+        btnMenu = ttk.Button(self, text="Menú",
+                             command=lambda: controller.show_frame(Frame_1))
+        btnMenu.grid(row=5, column=2, pady=10, padx=20)
 
 
 root = App()
